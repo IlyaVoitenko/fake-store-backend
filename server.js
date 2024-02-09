@@ -11,14 +11,13 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.post("/payment-intents", async (req, res) => {
+  const { amount, currency, id } = req.body;
   try {
     const { client_secret } = await stripe.paymentIntents.create({
-      amount: 1099,
-      currency: "usd",
+      amount,
+      currency,
       payment_method_types: ["card"],
-      metadata: {
-        order_id: "6735",
-      },
+      metadata: { order_id: id },
     });
     res.send({ client_secret });
   } catch (error) {
